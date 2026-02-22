@@ -1,0 +1,231 @@
+2048 Alphabet Game – Project Documentation
+1. Overview
+
+This project is a terminal-based implementation of the 2048 game using Python and NumPy.
+
+Instead of displaying numbers (2, 4, 8, 16, …), the game displays letters of the alphabet:
+
+2 → A
+
+4 → B
+
+8 → C
+
+16 → D
+
+...
+
+2²⁶ → Z
+
+The objective of the game is to reach the tile Z (2²⁶) by combining matching tiles.
+
+2. Technologies Used
+
+Python 3
+
+numpy – for matrix handling
+
+random – for tile generation
+
+math – for logarithmic calculations
+
+File handling – to store high score
+
+3. Game Rules
+
+The game runs on a 4×4 grid.
+
+Each move shifts tiles in one direction:
+
+W → Up
+
+S → Down
+
+A → Left
+
+D → Right
+
+When two identical tiles collide:
+
+They merge into one tile
+
+The tile value doubles
+
+The player’s score increases by the merged value
+
+After each valid move, a new tile (2 or 4) appears randomly.
+
+The game ends when:
+
+No moves are possible → Loss
+
+Player reaches tile Z (2²⁶) → Win
+
+4. Function Documentation
+display_letter(value)
+
+Purpose:
+Converts numeric tile values into alphabet letters.
+
+Parameters:
+
+value (int) – tile value (power of 2)
+
+Returns:
+
+'.' if value is 0 (empty cell)
+
+Corresponding uppercase letter for powers of 2
+
+Logic:
+
+Uses log2(value) to determine exponent
+
+Maps exponent to ASCII uppercase letters
+
+Example:
+
+2 → A
+4 → B
+8 → C
+rand(matrix)
+
+Purpose:
+Adds a new tile (2 or 4) to a random empty position.
+
+Behavior:
+
+90% chance → 2
+
+10% chance → 4
+
+Only fills empty cells (value 0)
+
+W(matrix) – Move Up
+
+Purpose:
+Moves and merges tiles upward.
+
+Returns:
+
+True if any movement occurred
+
+False otherwise
+
+Behavior:
+
+Slides tiles up
+
+Merges identical adjacent tiles
+
+Updates global score
+
+S(matrix) – Move Down
+
+Same logic as W() but shifts downward.
+
+A(matrix) – Move Left
+
+Transposes matrix
+
+Applies upward movement logic
+
+Transposes back
+
+D(matrix) – Move Right
+
+Transposes matrix
+
+Applies downward movement logic
+
+Transposes back
+
+can_move(matrix)
+
+Purpose:
+Checks if the game can continue.
+
+Returns:
+
+True if:
+
+There is at least one empty cell
+
+OR adjacent horizontal tiles match
+
+OR adjacent vertical tiles match
+
+False otherwise
+
+5. Game Flow
+High Score Loading
+with open("highscore.txt", "r")
+
+Loads previous high score
+
+Defaults to 0 if file doesn’t exist
+
+Main Game Loop
+
+Reset score
+
+Initialize board
+
+Add a random tile
+
+Repeat:
+
+Display board
+
+Take user input
+
+Perform move
+
+Add new tile if move valid
+
+Check win/loss
+
+End Conditions
+
+Win Condition:
+
+if 2**26 in matrix
+
+Loss Condition:
+
+if not can_move(matrix)
+6. Score System
+
+Score increases whenever tiles merge.
+
+Merged tile value is added to score.
+
+High score is saved in highscore.txt.
+
+7. Matrix Representation
+
+The board is represented as:
+
+numpy.array (4x4)
+
+Example:
+
+.     A     A     B
+.     .     .     .
+.     .     .     .
+.     .     A     .
+8. Controls
+Key	Action
+W	Move Up
+S	Move Down
+A	Move Left
+D	Move Right
+
+Input is case insensitive.
+
+9. File Structure
+project_folder/
+│
+├── game.py
+├── highscore.txt
+└── README.md
